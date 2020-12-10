@@ -13,8 +13,8 @@ class TrainsE(gluon.nn.Block):
         self.entity_len=entity_len
         self.relation_len=relation_len
         self.embedding_dim = embedding_dim
-        self.e = gluon.nn.Embedding(self.entity_len,embedding_dim,weight_initializer=mx.init.Uniform(6/(self.embedding_dim**0.5)))
-        self.r = gluon.nn.Embedding(self.relation_len,embedding_dim,weight_initializer=mx.init.Uniform(6/(self.embedding_dim**0.5)))
+        self.e = gluon.nn.Embedding(self.entity_len,embedding_dim)
+        self.r = gluon.nn.Embedding(self.relation_len,embedding_dim)
 
     def __hinge_loss(self, dist_correct, dist_corrupt):
         a=dist_correct - dist_corrupt + self.margin
@@ -44,9 +44,9 @@ class TrainsH(gluon.nn.Block):
         self.entity_len=entity_len
         self.relation_len=relation_len
         self.embedding_dim = embedding_dim
-        self.e = gluon.nn.Embedding(self.entity_len,embedding_dim,weight_initializer=mx.init.Uniform(6/(self.embedding_dim**0.5)))
-        self.r = gluon.nn.Embedding(self.relation_len,embedding_dim,weight_initializer=mx.init.Uniform(6/(self.embedding_dim**0.5)))
-        self.wr = gluon.nn.Embedding(self.relation_len,embedding_dim,weight_initializer=mx.init.Uniform(6/(self.embedding_dim**0.5)))
+        self.e = gluon.nn.Embedding(self.entity_len,embedding_dim)
+        self.r = gluon.nn.Embedding(self.relation_len,embedding_dim)
+        self.wr = gluon.nn.Embedding(self.relation_len,embedding_dim)
 
 
     def batch_norm(self):
@@ -85,9 +85,9 @@ class TrainsR(gluon.nn.Block):
         self.relation_len=relation_len
         self.k_dim=k_dim
         self.r_dim=r_dim
-        self.e = gluon.nn.Embedding(self.entity_len,k_dim,weight_initializer=mx.init.Uniform(6/(k_dim**0.5)))
-        self.r = gluon.nn.Embedding(self.relation_len,r_dim,weight_initializer=mx.init.Uniform(6/(relation_len**0.5)))
-        self.wr = gluon.nn.Embedding(self.relation_len,k_dim*r_dim,weight_initializer=mx.init.Uniform(6/(k_dim**0.5)))
+        self.e = gluon.nn.Embedding(self.entity_len,k_dim)
+        self.r = gluon.nn.Embedding(self.relation_len,r_dim)
+        self.wr = gluon.nn.Embedding(self.relation_len,k_dim*r_dim)
 
     def batch_norm(self):
         for param in self.params:
