@@ -87,16 +87,16 @@ class TrainsR(gluon.nn.Block):
         self.r_dim=r_dim
         self.e = gluon.nn.Embedding(self.entity_len,k_dim)
         self.r = gluon.nn.Embedding(self.relation_len,r_dim)
-        self.wr = gluon.nn.Embedding(self.relation_len,k_dim*r_dim)
+        self.Mr = gluon.nn.Embedding(self.relation_len,k_dim*r_dim)
 
     def batch_norm(self):
         for param in self.params:
             param=normlize(param)
 
-    def __Rtransfer(self, e, wr):
+    def __Rtransfer(self, e, Mr):
         e=e.reshape(-1,1,self.k_dim)
-        twr=wr.reshape(-1,self.k_dim,self.r_dim)
-        result=nd.batch_dot(e,twr)
+        tMr=Mr.reshape(-1,self.k_dim,self.r_dim)
+        result=nd.batch_dot(e,tMr)
         result=result.reshape(-1,self.r_dim)
         return result
 
@@ -109,8 +109,8 @@ class TrainsR(gluon.nn.Block):
         h = self.e(x[:, 0])
         r = self.r(r_index)
         t = self.e(x[:, 1])
-        wr = self.wr(r_index)
-        score = self.__Rtransfer(h,wr) + r - self.__Rtransfer(t,wr)
+        Mr = self.Mr(r_index)
+        score = self.__Rtransfer(h,Mr) + r - self.__Rtransfer(t,Mr)
         return nd.sum(score**2,axis=1,keepdims=True)**0.5
 
     def net(self,X):
