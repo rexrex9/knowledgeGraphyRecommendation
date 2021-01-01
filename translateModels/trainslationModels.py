@@ -54,7 +54,7 @@ class TrainsH(gluon.nn.Block):
             param=normlize(param)
 
     def __Htransfer(self, e, wr):
-        norm_wr = wr/wr.norm(ord=2,axis=1,keepdims=True)
+        norm_wr = wr/wr.norm(axis=1,keepdims=True)
         return e - nd.sum(e * norm_wr, 1, True) * norm_wr
 
     def __hinge_loss(self, dist_correct, dist_corrupt):
@@ -136,7 +136,7 @@ def train(net,dataLoad,pairs,epochs=20,lr=0.01,batchSize=96):
 
 if __name__ == '__main__':
     entity, relationShips, pairs = gernrateDate.getParis(filePaths.FB15K_BASE_PATH_1_1_PATH)
-    net=TrainsR(len(entity),len(relationShips))
+    net=TrainsH(len(entity),len(relationShips))
     net.collect_params().initialize(mx.init.Xavier())
 
     dataLoad = dataloader.Dataload(entity, relationShips)
